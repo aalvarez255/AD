@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,19 +34,51 @@ public class login extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet login</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Error: Página no encontrada.</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        PrintWriter out = response.getWriter();
+        // load the sqlite-JDBC driver using the current class loader
+        Class.forName("org.sqlite.JDBC");        
+                
+        String user = request.getParameter("usuario");
+        String password = request.getParameter("password");        
+        
+        boolean found = false;
+        
+        Connection connection = null;
+        try {          
+            // create a database connection
+            //if the database doesn't exists, it will be created
+            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+            //create users table if not exists (otherwise the select query crashes)
+            statement.executeUpdate("create table if not exists usuarios (id_usuario string primary key, password string)");
+            ResultSet rs = statement.executeQuery("select * from usuarios where id_usuario='"+user+"' and password='"+password+"'");
+
+            while(rs.next())
+            {
+              found = true;           
+            }          
+        } catch(SQLException e) {
+          System.err.println(e.getMessage());
+        }   
+        finally {
+            try {
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }  
+        if (found) {
+            response.sendRedirect("menu.html");
+        }
+        else {
+            response.sendRedirect("error.html");
         }
     }
 
@@ -59,7 +94,19 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet login</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Error: Página no encontrada.</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
         
         
@@ -75,27 +122,12 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("usuario");
-        String password = request.getParameter("password");
-        
-        boolean found = false;
-        
-        Connection connection = null;
-//        try
-//        {
-//          
-//          // create a database connection
-//          connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\AD\\.db");
-//          Statement statement = connection.createStatement();
-//          statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-        //prueba:
-        if (user.equals("adri") && password.equals("adri")) found = true;
-        
-        if (!found) {
-            response.sendRedirect("error.html");
+        try {
+            processRequest(request, response);
         }
-        else response.sendRedirect("menu.html");
+        catch (java.lang.ClassNotFoundException c) {
+            System.err.println (c.getMessage());
+        }  
     }
 
     /**
