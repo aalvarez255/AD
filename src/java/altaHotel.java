@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Adrian
  */
-@WebServlet(urlPatterns = {"/altaVuelo"})
-public class altaVuelo extends HttpServlet {
+@WebServlet(urlPatterns = {"/altaHotel"})
+public class altaHotel extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +33,19 @@ public class altaVuelo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
-        
+            throws ServletException, IOException, ClassNotFoundException {        
         Class.forName("org.sqlite.JDBC");
         request.setCharacterEncoding("UTF-8");
-        
-        String num_vuelo = request.getParameter("num");
-        String compañia = request.getParameter("compania");
-        String ciudad_origen = request.getParameter("ciudad_origen");
-        String hora_salida = request.getParameter("salida");
-        String ciudad_destino = request.getParameter("ciudad_destino");
-        String hora_llegada = request.getParameter("llegada");
+                
+        String nombre = request.getParameter("nombre");
+        String cadena = request.getParameter("cadena");
+        int num_hab = Integer.parseInt(request.getParameter("num_hab"));
+        String calle = request.getParameter("calle");
+        int numero = Integer.parseInt(request.getParameter("numero"));
+        String cp = request.getParameter("cp");
+        String ciudad = request.getParameter("ciudad");
+        String provincia = request.getParameter("provincia");
+        String pais = request.getParameter("pais");
         
         Connection connection = null;
         try {          
@@ -52,8 +55,8 @@ public class altaVuelo extends HttpServlet {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
             
-            statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-            statement.executeUpdate("insert into vuelos (num_vuelo,companyia,origen,hora_salida,destino,hora_llegada) values('"+num_vuelo+"','"+compañia+"','"+ciudad_origen+"','"+hora_salida+"','"+ciudad_destino+"','"+hora_llegada+"')");
+            statement.executeUpdate("create table if not exists hoteles (id_hotel integer primary key autoincrement, nom_hotel string,cadena string, num_hab integer, calle string, numero integer, codigo_postal string, ciudad string, provincia string, pais string)");
+            statement.executeUpdate("insert into hoteles (nom_hotel,cadena,num_hab,calle,numero,codigo_postal,ciudad,provincia,pais) values('"+nombre+"','"+cadena+"',"+num_hab+",'"+calle+"',"+numero+",'"+cp+"','"+ciudad+"','"+provincia+"','"+pais+"')");
            
         }catch(SQLException e){
             System.err.println(e.getMessage());
@@ -110,7 +113,7 @@ public class altaVuelo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         try {
+        try {
             processRequest(request, response);
         }
         catch (java.lang.ClassNotFoundException c) {
