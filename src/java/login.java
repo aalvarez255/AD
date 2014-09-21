@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -65,7 +66,10 @@ public class login extends HttpServlet {
               found = true;           
             }          
         } catch(SQLException e) {
-          System.err.println(e.getMessage());
+            System.err.println(e.getMessage());
+            request.setAttribute("errorType","database");
+            RequestDispatcher rd = request.getRequestDispatcher("error");
+            rd.forward(request,response);
         }   
         finally {
             try {
@@ -75,13 +79,18 @@ public class login extends HttpServlet {
             catch(SQLException e) {
                 // connection close failed.
                 System.err.println(e.getMessage());
+                request.setAttribute("errorType","database");
+                RequestDispatcher rd = request.getRequestDispatcher("error");
+                rd.forward(request,response);
             }
         }  
         if (found) {
             response.sendRedirect("menu.html");
         }
         else {
-            response.sendRedirect("error.html");
+            request.setAttribute("errorType","login");
+            RequestDispatcher rd = request.getRequestDispatcher("error");
+            rd.forward(request,response);
         }
     }
 

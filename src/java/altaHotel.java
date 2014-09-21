@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,6 +61,9 @@ public class altaHotel extends HttpServlet {
            
         }catch(SQLException e){
             System.err.println(e.getMessage());
+            request.setAttribute("errorType","database");
+            RequestDispatcher rd = request.getRequestDispatcher("error");
+            rd.forward(request,response);
         }
         finally {
             try {
@@ -69,6 +73,9 @@ public class altaHotel extends HttpServlet {
             catch(SQLException e) {
                 // connection close failed.
                 System.err.println(e.getMessage());
+                request.setAttribute("errorType","database");
+                RequestDispatcher rd = request.getRequestDispatcher("error");
+                rd.forward(request,response);
             }
         }  
         response.sendRedirect("menu.html");

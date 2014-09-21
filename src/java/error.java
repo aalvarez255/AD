@@ -5,11 +5,6 @@
  */
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Adrian
  */
-@WebServlet(urlPatterns = {"/altaVuelo"})
-public class altaVuelo extends HttpServlet {
+@WebServlet(urlPatterns = {"/error"})
+public class error extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,50 +28,34 @@ public class altaVuelo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
-        
-        Class.forName("org.sqlite.JDBC");
-        request.setCharacterEncoding("UTF-8");
-        
-        String num_vuelo = request.getParameter("num");
-        String compañia = request.getParameter("compania");
-        String ciudad_origen = request.getParameter("ciudad_origen");
-        String hora_salida = request.getParameter("salida");
-        String ciudad_destino = request.getParameter("ciudad_destino");
-        String hora_llegada = request.getParameter("llegada");
-        
-        Connection connection = null;
-        try {          
-            // create a database connection
-            //if the database doesn't exists, it will be created
-            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");        
+        String errorType = (String)request.getAttribute("errorType");
             
-            statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-            statement.executeUpdate("insert into vuelos (num_vuelo,companyia,origen,hora_salida,destino,hora_llegada) values('"+num_vuelo+"','"+compañia+"','"+ciudad_origen+"','"+hora_salida+"','"+ciudad_destino+"','"+hora_llegada+"')");
-           
-        }catch(SQLException e){
-            System.err.println(e.getMessage());
-            request.setAttribute("errorType","database");
-            RequestDispatcher rd = request.getRequestDispatcher("error");
-            rd.forward(request,response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Error</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Error</h1>");
+            if (errorType.equals("login")) {                
+                out.println("<p>Usuario o contraseña incorrectos.</p>");
+                out.println("<form action='login.html'>");
+                out.println("<input type='submit' value='Atrás'/>");
+                out.println("</form>");
+            }
+            else {
+                out.println("<p>No se puede establecer conexión con la base de datos.</p>");
+                out.println("<form action='menu.html'>");
+                out.println("<input type='submit' value='Atrás'/>");
+                out.println("</form>");
+            }
+            out.println("</body>");
+            out.println("</html>");            
         }
-        finally {
-            try {
-                if(connection != null)
-                    connection.close();
-            }
-            catch(SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-                request.setAttribute("errorType","database");
-                RequestDispatcher rd = request.getRequestDispatcher("error");
-                rd.forward(request,response);
-            }
-        }  
-        response.sendRedirect("menu.html");
-     
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -117,12 +96,7 @@ public class altaVuelo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         try {
-            processRequest(request, response);
-        }
-        catch (java.lang.ClassNotFoundException c) {
-            System.err.println (c.getMessage());
-        }  
+        processRequest(request, response);
     }
 
     /**
