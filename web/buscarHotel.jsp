@@ -66,18 +66,18 @@
             <table>
                 <tr><td>Nombre del hotel: </td><td><input type="text" name="nnombre"/></td></tr>
                 <tr><td>Cadena: </td><td><select name="cad_hoteles" thresh>      
-                        <option> --- </option>
+                        <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : cad) {
-                            out.println("<option>"+item+"</option>");
+                            out.println("<option value='"+item+"'>"+item+"</option>");
                         }
                         %>
                         </select></td></tr>
                 <tr><td>Ciudad: </td><td><select name="ciu_hotel">
-                        <option> --- </option>
+                        <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : ciu) {
-                            out.println("<option>"+item+"</option>");
+                            out.println("<option value='"+item+"'>"+item+"</option>");
                         }
                         %>
                         </select></td></tr>

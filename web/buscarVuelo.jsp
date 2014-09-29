@@ -65,27 +65,27 @@
         <form action="buscarVuelo" method="post">
             <table>
                 <tr><td>Número de vuelo: </td><td><input type="text" name="num"/></td></tr>
-                <tr><td>Compañía: </td><td><select name="compania">
-                        <option> --- </option>
+                <tr><td>Compañía: </td><td><select name="compania" placeholder="Introduzca compañia">
+                        <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : companys) {
-                            out.println("<option>"+item+"</option>");
+                            out.println("<option value='"+item+"'>"+item+"</option>");
                         }
                         %>
                         </select></td></tr>
-                <tr><td>Ciudad de origen: </td><td><select name="origen" thresh>      
-                        <option> --- </option>
+                <tr><td>Ciudad de origen: </td><td><select name="origen">      
+                        <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : ciudad_origen) {
-                            out.println("<option>"+item+"</option>");
+                            out.println("<option value='"+item+"'>"+item+"</option>");
                         }
                         %>
                         </select></td></tr>
                 <tr><td>Ciudad de destino: </td><td><select name="destino">
-                        <option> --- </option>
+                        <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : ciudad_destino) {
-                            out.println("<option>"+item+"</option>");
+                            out.println("<option value='"+item+"'>"+item+"</option>");
                         }
                         %>
                         </select></td></tr>
