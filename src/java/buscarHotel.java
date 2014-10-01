@@ -52,7 +52,7 @@ public class buscarHotel extends HttpServlet {
             try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -89,6 +89,9 @@ public class buscarHotel extends HttpServlet {
                         out.println("<body>");
                         out.println("<h1>Resultado de la búsqueda</h1>");
                         out.println("<p>No se han encontrado resultados</p>");
+                        out.println("<form action='buscarHotel.jsp'>");
+                        out.println("<input type='submit' value='Atrás'>");
+                        out.println("</form>");
                         out.println("</body>");
                         out.println("</html>");
                     } catch (Exception e) {
@@ -110,6 +113,9 @@ public class buscarHotel extends HttpServlet {
                             out.println("<tr><td>" + rs.getString("nom_hotel") + "</td><td>" + rs.getString("cadena") + "</td><td>" + rs.getString("num_hab") + "</td><td>" + rs.getString("calle") + "</td><td>" + rs.getString("numero") + "</td><td>" + rs.getString("codigo_postal") + "</td><td>" + rs.getString("ciudad") + "</td><td>" + rs.getString("provincia") + "</td><td>" + rs.getString("pais") + "</td></tr>");
                         }
                         out.println("</table>");
+                        out.println("<form action='buscarHotel.jsp'>");
+                        out.println("<input type='submit' value='Atrás'>");
+                        out.println("</form>");
                         out.println("</body>");
                         out.println("</html>");
                     } catch (Exception e) {
@@ -149,6 +155,9 @@ public class buscarHotel extends HttpServlet {
                 out.println("<body>");
                 out.println("<h1>Error</h1>");
                 out.println("<p>No se han introducido datos de búsqueda</p>");
+                out.println("<form action='buscarHotel.jsp'>");
+                out.println("<input type='submit' value='Atrás'>");
+                out.println("</form>");
                 out.println("</body>");
                 out.println("</html>");
             } catch (Exception e) {
