@@ -35,23 +35,23 @@ public class buscarVuelo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException {
-          
+
         Class.forName("org.sqlite.JDBC");
         request.setCharacterEncoding("UTF-8");
-        
+
         String num = request.getParameter("num");
         String compania = request.getParameter("compania");
         String origen = request.getParameter("origen");
         String destino = request.getParameter("destino");
-        
+
         Boolean search = true;
         if (num.equals("") && compania == null && origen == null && destino == null) {
             search = false;
         }
-        
+
         if (search) {
             Connection connection = null;
-            try {          
+            try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
                 connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
@@ -60,118 +60,122 @@ public class buscarVuelo extends HttpServlet {
 
                 //create users table if not exists (otherwise the select query crashes)
                 statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-                
-                ResultSet rs; 
-                
+
+                ResultSet rs;
+
                 if (!num.equals("") && (compania == null) && (origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"'");
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "'");
+                } else if (num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='" + compania + "'");
+                } else if (num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where origen='" + origen + "'");
+                } else if (num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where destino='" + destino + "'");
+                } else if (num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where origen='" + origen + "' and destino='" + destino + "'");
+                } else if (num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='" + compania + "' and destino='" + destino + "'");
+                } else if (num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='" + compania + "' and origen='" + origen + "'");
+                } else if (num.equals("") && !(compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='" + compania + "' and origen='" + origen + "' and destino='" + destino + "'");
+                } else if (!num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and destino='" + destino + "'");
+                } else if (!num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and origen='" + origen + "'");
+                } else if (!num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and origen='" + origen + "' and destino='" + destino + "'");
+                } else if (!num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "'");
+                } else if (!num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "' and destino='" + destino + "'");
+                } else if (!num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "' and origen='" + origen + "'");
+                } else {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "' and origen='" + origen + "' and destino='" + destino + "'");
                 }
-                else if (num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"'");
-                }
-                else if (num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where origen='"+origen+"'");
-                }
-                else if (num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where destino='"+destino+"'");
-                }
-                else if (num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where origen='"+origen+"' and destino='"+destino+"'");
-                }
-                else if (num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and destino='"+destino+"'");
-                }
-                else if (num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and origen='"+origen+"'");
-                }
-                else if (num.equals("") && !(compania == null) && !(origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and origen='"+origen+"' and destino='"+destino+"'");
-                }
-                else if (!num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and destino='"+destino+"'");
-                }
-                else if (!num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and origen='"+origen+"'");
-                }
-                else if (!num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and origen='"+origen+"' and destino='"+destino+"'");
-                }
-                else if (!num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"'");
-                }
-                else if (!num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and destino='"+destino+"'");
-                }
-                else if (!num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and origen='"+origen+"'");
-                }
-                else {
-                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and origen='"+origen+"' and destino='"+destino+"'");
+                
+                Boolean empty = false;
+
+                if (empty) { 
+                    try (PrintWriter out = response.getWriter()) {
+                        /* TODO output your page here. You may use following sample code. */
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Resultado</title>");
+                        out.println("</head>");
+                        out.println("<body>");
+                        out.println("<h1>Resultado de la búsqueda</h1>");
+                        out.println("<p>No se han encontrado resultados</p>");
+                        out.println("</body>");
+                        out.println("</html>");
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                } else {
+                    try (PrintWriter out = response.getWriter()) {
+                        /* TODO output your page here. You may use following sample code. */
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Resultado</title>");
+                        out.println("</head>");
+                        out.println("<body>");
+                        out.println("<h1>Resultado de la búsqueda</h1>");
+                        out.println("<table>");
+                        out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
+                        while (rs.next()) {
+                            out.println("<tr><td>" + rs.getString("num_vuelo") + "</td><td>" + rs.getString("companyia") + "</td><td>" + rs.getString("origen") + "</td><td>" + rs.getString("hora_salida") + "</td><td>" + rs.getString("destino") + "</td><td>" + rs.getString("hora_llegada") + "</td></tr>");
+                        }
+                        out.println("</table>");
+                        out.println("</body>");
+                        out.println("</html>");
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
                 }
 
-                try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                    out.println("<!DOCTYPE html>");
-                    out.println("<html>");
-                    out.println("<head>");
-                    out.println("<title>Resultado</title>");            
-                    out.println("</head>");
-                    out.println("<body>");
-                    out.println("<h1>Resultado de la búsqueda</h1>");
-                    out.println("<table>");                    
-                    out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
-                    while(rs.next()) {
-                         out.println("<tr><td>"+rs.getString("num_vuelo")+"</td><td>"+rs.getString("companyia")+"</td><td>"+rs.getString("origen")+"</td><td>"+rs.getString("hora_salida")+"</td><td>"+rs.getString("destino")+"</td><td>"+rs.getString("hora_llegada")+"</td></tr>");
-                    }  
-                    out.println("</table>");
-                    out.println("</body>");
-                    out.println("</html>");
-                }catch(Exception e) {
-                    System.err.println(e.getMessage());
-                }        
-                
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 System.err.println(e.getMessage());
-                request.setAttribute("errorType","database");
-                request.setAttribute("goto","menu");
+                request.setAttribute("errorType", "database");
+                request.setAttribute("goto", "menu");
 
                 RequestDispatcher rd = request.getRequestDispatcher("error");
-                rd.forward(request,response);
-            }   
-            finally {
+                rd.forward(request, response);
+            } finally {
                 try {
-                    if(connection != null)
+                    if (connection != null) {
                         connection.close();
-                }
-                catch(SQLException e) {
+                    }
+                } catch (SQLException e) {
                     // connection close failed.
                     System.err.println(e.getMessage());
-                    request.setAttribute("errorType","database");
-                    request.setAttribute("goto","menu");
+                    request.setAttribute("errorType", "database");
+                    request.setAttribute("goto", "menu");
 
                     RequestDispatcher rd = request.getRequestDispatcher("error");
-                    rd.forward(request,response);
+                    rd.forward(request, response);
                 }
-            }  
-        }
-        else {
+            }
+        } else {
             try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+                /* TODO output your page here. You may use following sample code. */
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
                 out.println("<head>");
-                out.println("<title>Error</title>");            
+                out.println("<title>Error</title>");
                 out.println("</head>");
                 out.println("<body>");
                 out.println("<h1>Error</h1>");
                 out.println("<p>No se han introducido datos de búsqueda</p>");
                 out.println("</body>");
                 out.println("</html>");
-            }catch(Exception e) {
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -188,10 +192,9 @@ public class buscarVuelo extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+        } catch (java.lang.ClassNotFoundException c) {
+            System.err.println(c.getMessage());
         }
-        catch (java.lang.ClassNotFoundException c) {
-            System.err.println (c.getMessage());
-        } 
     }
 
     /**
@@ -207,10 +210,9 @@ public class buscarVuelo extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+        } catch (java.lang.ClassNotFoundException c) {
+            System.err.println(c.getMessage());
         }
-        catch (java.lang.ClassNotFoundException c) {
-            System.err.println (c.getMessage());
-        } 
     }
 
     /**
