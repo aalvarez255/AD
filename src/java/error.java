@@ -59,6 +59,8 @@ public class error extends HttpServlet {
             }
             out.println("</body>");
             out.println("</html>");            
+        } catch(Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
