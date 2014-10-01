@@ -95,51 +95,31 @@ public class buscarVuelo extends HttpServlet {
                     rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "' and origen='" + origen + "' and destino='" + destino + "'");
                 }
                 
-                Boolean empty = false;
-
-                if (empty) { 
-                    try (PrintWriter out = response.getWriter()) {
-                        /* TODO output your page here. You may use following sample code. */
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Resultado</title>");
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Resultado de la búsqueda</h1>");
-                        out.println("<p>No se han encontrado resultados</p>");
-                        out.println("<form action='buscarVuelo.jsp'>");
-                        out.println("<input type='submit' value='Atrás'>");
-                        out.println("</form>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
+                Boolean empty = true;
+                try (PrintWriter out = response.getWriter()) {
+                    /* TODO output your page here. You may use following sample code. */
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Resultado</title>");
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1>Resultado de la búsqueda</h1>");
+                    out.println("<table>");
+                    out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
+                    while (rs.next()) {
+                        empty=false;
+                        out.println("<tr><td>" + rs.getString("num_vuelo") + "</td><td>" + rs.getString("companyia") + "</td><td>" + rs.getString("origen") + "</td><td>" + rs.getString("hora_salida") + "</td><td>" + rs.getString("destino") + "</td><td>" + rs.getString("hora_llegada") + "</td></tr>");
                     }
-                } else {
-                    try (PrintWriter out = response.getWriter()) {
-                        /* TODO output your page here. You may use following sample code. */
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Resultado</title>");
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Resultado de la búsqueda</h1>");
-                        out.println("<table>");
-                        out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
-                        while (rs.next()) {
-                            out.println("<tr><td>" + rs.getString("num_vuelo") + "</td><td>" + rs.getString("companyia") + "</td><td>" + rs.getString("origen") + "</td><td>" + rs.getString("hora_salida") + "</td><td>" + rs.getString("destino") + "</td><td>" + rs.getString("hora_llegada") + "</td></tr>");
-                        }
-                        out.println("</table>");
-                        out.println("<form action='buscarVuelo.jsp'>");
-                        out.println("<input type='submit' value='Atrás'>");
-                        out.println("</form>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
-                    }
+                    out.println("</table>");
+                    if (empty) out.println("<p>No se han encontrado resultados</p>");
+                    out.println("<form action='buscarVuelo.jsp'>");
+                    out.println("<input type='submit' value='Atrás'>");
+                    out.println("</form>");
+                    out.println("</body>");
+                    out.println("</html>");
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
 
             } catch (SQLException e) {
