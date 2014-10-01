@@ -54,31 +54,60 @@ public class buscarVuelo extends HttpServlet {
             try {          
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
                 //create users table if not exists (otherwise the select query crashes)
                 statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-
-                if (num.equals("")) num = "*";
-                else {
-                    num = "'"+num+"'";
-                }
-                if (compania == null) compania = "*";
-                else {
-                    compania = "'"+compania+"'";
-                }
-                if (origen == null) origen = "*";
-                else {
-                    origen = "'"+origen+"'";
-                }
-                if (destino == null) destino = "*";
-                else {
-                    destino = "'"+destino+"'";
-                }
                 
-                ResultSet rs = statement.executeQuery("select * from vuelos where num_vuelo="+num+" and companyia="+compania+" and origen="+origen+" and destino="+destino+"");
+                ResultSet rs; 
+                
+                if (!num.equals("") && (compania == null) && (origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"'");
+                }
+                else if (num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"'");
+                }
+                else if (num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where origen='"+origen+"'");
+                }
+                else if (num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where destino='"+destino+"'");
+                }
+                else if (num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where origen='"+origen+"' and destino='"+destino+"'");
+                }
+                else if (num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and destino='"+destino+"'");
+                }
+                else if (num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and origen='"+origen+"'");
+                }
+                else if (num.equals("") && !(compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where companyia='"+compania+"' and origen='"+origen+"' and destino='"+destino+"'");
+                }
+                else if (!num.equals("") && (compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and destino='"+destino+"'");
+                }
+                else if (!num.equals("") && (compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and origen='"+origen+"'");
+                }
+                else if (!num.equals("") && (compania == null) && !(origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and origen='"+origen+"' and destino='"+destino+"'");
+                }
+                else if (!num.equals("") && !(compania == null) && (origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"'");
+                }
+                else if (!num.equals("") && !(compania == null) && (origen == null) && !(destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and destino='"+destino+"'");
+                }
+                else if (!num.equals("") && !(compania == null) && !(origen == null) && (destino == null)) {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and origen='"+origen+"'");
+                }
+                else {
+                    rs = statement.executeQuery("select * from vuelos where num_vuelo='"+num+"' and companyia='"+compania+"' and origen='"+origen+"' and destino='"+destino+"'");
+                }
 
                 try (PrintWriter out = response.getWriter()) {
                 /* TODO output your page here. You may use following sample code. */
