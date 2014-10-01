@@ -54,6 +54,11 @@
                 }
             }catch(Exception e) {
                 System.err.println(e.getMessage());
+                 request.setAttribute("errorType","database");
+                request.setAttribute("goto","menu");
+               
+                RequestDispatcher rd = request.getRequestDispatcher("error");
+                rd.forward(request,response);
             }
             finally {
                 connection.close();
@@ -64,8 +69,8 @@
         <h1> Buscar Hotel </h1>
         <form action="buscarHotel" method="post">
             <table>
-                <tr><td>Nombre del hotel: </td><td><input type="text" name="nnombre"/></td></tr>
-                <tr><td>Cadena: </td><td><select name="cad_hoteles" thresh>      
+                <tr><td>Nombre del hotel: </td><td><input type="text" name="nombre"/></td></tr>
+                <tr><td>Cadena: </td><td><select name="cad_hoteles">      
                         <option value="" disabled selected> Seleccione una opción </option>
                         <% 
                         for(String item : cad) {

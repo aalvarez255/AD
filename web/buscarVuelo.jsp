@@ -54,6 +54,12 @@
                 }
             }catch(Exception e) {
                 System.err.println(e.getMessage());
+                
+                request.setAttribute("errorType","database");
+                request.setAttribute("goto","menu");
+               
+                RequestDispatcher rd = request.getRequestDispatcher("error");
+                rd.forward(request,response);
             }
             finally {
                 connection.close();
