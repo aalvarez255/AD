@@ -31,6 +31,7 @@ public class error extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");        
         String errorType = (String)request.getAttribute("errorType");
+        String goTo = (String)request.getAttribute("goto");
             
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -49,7 +50,10 @@ public class error extends HttpServlet {
             }
             else {
                 out.println("<p>No se puede establecer conexión con la base de datos.</p>");
-                out.println("<form action='menu.html'>");
+                
+                if (goTo.equals("menu")) out.println("<form action='menu.html'>");
+                else out.println("<form action='login.html'>");
+                
                 out.println("<input type='submit' value='Atrás'/>");
                 out.println("</form>");
             }

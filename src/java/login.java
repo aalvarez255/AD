@@ -68,6 +68,8 @@ public class login extends HttpServlet {
         } catch(SQLException e) {
             System.err.println(e.getMessage());
             request.setAttribute("errorType","database");
+            request.setAttribute("goto","login");
+            
             RequestDispatcher rd = request.getRequestDispatcher("error");
             rd.forward(request,response);
         }   
@@ -80,6 +82,8 @@ public class login extends HttpServlet {
                 // connection close failed.
                 System.err.println(e.getMessage());
                 request.setAttribute("errorType","database");
+                request.setAttribute("goto","login");
+                
                 RequestDispatcher rd = request.getRequestDispatcher("error");
                 rd.forward(request,response);
             }
@@ -89,6 +93,8 @@ public class login extends HttpServlet {
         }
         else {
             request.setAttribute("errorType","login");
+            request.setAttribute("goto","login");
+            
             RequestDispatcher rd = request.getRequestDispatcher("error");
             rd.forward(request,response);
         }
