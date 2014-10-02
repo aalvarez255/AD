@@ -122,8 +122,11 @@
                             </select></td></tr>
                     <tr><td colspan="2"><input type="submit" value="Buscar"/></td></tr>
                 </table>  
-
-                
+            </form>
+            <form action='menu.html'>
+                <table>
+                    <tr><td colspan="2"><input type='submit' value='Atrás'></td></tr>
+                </table>
             </form>
         </div>
     </body>

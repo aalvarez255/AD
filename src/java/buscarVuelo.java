@@ -54,7 +54,7 @@ public class buscarVuelo extends HttpServlet {
             try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -94,7 +94,7 @@ public class buscarVuelo extends HttpServlet {
                 } else {
                     rs = statement.executeQuery("select * from vuelos where num_vuelo='" + num + "' and companyia='" + compania + "' and origen='" + origen + "' and destino='" + destino + "'");
                 }
-                
+
                 Boolean empty = true;
                 try (PrintWriter out = response.getWriter()) {
                     /* TODO output your page here. You may use following sample code. */
@@ -102,26 +102,30 @@ public class buscarVuelo extends HttpServlet {
                     out.println("<html>");
                     out.println("<head>");
                     out.println("<title>Resultado</title>");
+                    out.println("<link rel='stylesheet' type='text/css' href='css/buscarVuelo.css'>");
                     out.println("</head>");
                     out.println("<body>");
+                    out.println("<div id='container'>");
                     out.println("<h1>Resultado de la búsqueda</h1>");
                     out.println("<table cellpadding='5'>");
                     out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
                     while (rs.next()) {
-                        empty=false;
+                        empty = false;
                         out.println("<tr><td>" + rs.getString("num_vuelo") + "</td><td>" + rs.getString("companyia") + "</td><td>" + rs.getString("origen") + "</td><td>" + rs.getString("hora_salida") + "</td><td>" + rs.getString("destino") + "</td><td>" + rs.getString("hora_llegada") + "</td></tr>");
                     }
-                    out.println("</table>");
-                    if (empty) out.println("<p>No se han encontrado resultados</p>");
                     out.println("<form action='buscarVuelo.jsp'>");
-                    out.println("<input type='submit' value='Atrás'>");
+                    out.println("<tr><td colspan='6'><input type='submit' value='Atrás'></td></tr>");
+                    out.println("</table>");
+                    if (empty) {
+                        out.println("<p>No se han encontrado resultados</p>");
+                    }
                     out.println("</form>");
+                    out.println("</div>");
                     out.println("</body>");
                     out.println("</html>");
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }
-
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
                 request.setAttribute("errorType", "database");

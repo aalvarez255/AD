@@ -21,7 +21,7 @@
                 margin-left: 2px;
                 width: 174px;
             }
-            
+
             table td input {
                 float: right;
             }
@@ -60,7 +60,7 @@
            Connection connection = null;    
             
            try {         
-               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                Statement statement = connection.createStatement();
                statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -114,6 +114,11 @@
                                 %>
                             </select></td></tr>
                     <tr><td colspan="2"><input type="submit" value="Buscar"/></td></tr>
+                </table>
+            </form>
+            <form action='menu.html'>
+                <table>
+                    <tr><td colspan="2"><input type='submit' value='Atrás'></td></tr>
                 </table>
             </form>
         </div>

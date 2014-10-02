@@ -52,7 +52,7 @@ public class buscarHotel extends HttpServlet {
             try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -77,7 +77,6 @@ public class buscarHotel extends HttpServlet {
                 }
 
                 Boolean empty = true;
-               
                 try (PrintWriter out = response.getWriter()) {
                     /* TODO output your page here. You may use following sample code. */
                     out.println("<!DOCTYPE html>");
@@ -95,12 +94,14 @@ public class buscarHotel extends HttpServlet {
                         empty = false;
                         out.println("<tr><td>" + rs.getString("nom_hotel") + "</td><td>" + rs.getString("cadena") + "</td><td>" + rs.getString("num_hab") + "</td><td>" + rs.getString("calle") + "</td><td>" + rs.getString("numero") + "</td><td>" + rs.getString("codigo_postal") + "</td><td>" + rs.getString("ciudad") + "</td><td>" + rs.getString("provincia") + "</td><td>" + rs.getString("pais") + "</td></tr>");
                     }
-                    out.println("</table>");
-                    if (empty) out.println("<p>No se han encontrado resultados</p>");
                     out.println("<form action='buscarHotel.jsp'>");
-                    out.println("<input type='submit' value='Atrás'>");
-                    out.println("</div>");
+                    out.println("<tr><td colspan='9'><input type='submit' value='Atrás'></td></tr>");
+                    out.println("</table>");
+                    if (empty) {
+                        out.println("<p>No se han encontrado resultados</p>");
+                    }
                     out.println("</form>");
+                    out.println("</div>");
                     out.println("</body>");
                     out.println("</html>");
                 } catch (Exception e) {
