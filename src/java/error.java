@@ -44,7 +44,7 @@ public class error extends HttpServlet {
             out.println("<h1>Error</h1>");
             if (errorType.equals("login")) {                
                 out.println("<p>Usuario o contraseña incorrectos.</p>");
-                out.println("<form action='login.html'>");
+                out.println("<form action='login.jsp'>");
                 out.println("<input type='submit' value='Atrás'/>");
                 out.println("</form>");
             }
@@ -52,7 +52,7 @@ public class error extends HttpServlet {
                 out.println("<p>No se puede establecer conexión con la base de datos.</p>");
                 
                 if (goTo.equals("menu")) out.println("<form action='menu.html'>");
-                else out.println("<form action='login.html'>");
+                else out.println("<form action='login.jsp'>");
                 
                 out.println("<input type='submit' value='Atrás'/>");
                 out.println("</form>");

@@ -40,8 +40,11 @@ and open the template in the editor.
             #container {
                 display: inline-block;
                 position:absolute;
-                left: 35%;
-                top: 35%;                
+                width: 684px;
+                height: 219px;
+                bottom: 0; left: 0; top: 0; right: 0;
+                margin: auto;
+                position: absolute;
 
                 background-color: #f2f0e9;
                 border-radius: 15px 15px 15px 15px;
