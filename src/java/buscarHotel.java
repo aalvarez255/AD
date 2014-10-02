@@ -84,11 +84,13 @@ public class buscarHotel extends HttpServlet {
                     out.println("<html>");
                     out.println("<head>");
                     out.println("<title>Resultado</title>");
+                    out.println("<link rel='stylesheet' type='text/css' href='css/buscarhotel.css'>");
                     out.println("</head>");
                     out.println("<body>");
+                    out.println("<div id='container'>");
                     out.println("<h1>Resultado de la búsqueda</h1>");
-                    out.println("<table>");
-                    out.println("<tr><th>Nombre del hotel</th><th>Cadena</th><th>Número de habitación</th><th>Calle</th><th>Número</th><th>Código postal</th><th>Ciudad</th><th>Provincia</th><th>País</th></tr>");
+                    out.println("<table cellpadding='5'>");
+                    out.println("<tr><th>Nombre del hotel</th><th>Cadena</th><th>Número de habitaciones</th><th>Calle</th><th>Número</th><th>Código postal</th><th>Ciudad</th><th>Provincia</th><th>País</th></tr>");
                     while (rs.next()) {
                         empty = false;
                         out.println("<tr><td>" + rs.getString("nom_hotel") + "</td><td>" + rs.getString("cadena") + "</td><td>" + rs.getString("num_hab") + "</td><td>" + rs.getString("calle") + "</td><td>" + rs.getString("numero") + "</td><td>" + rs.getString("codigo_postal") + "</td><td>" + rs.getString("ciudad") + "</td><td>" + rs.getString("provincia") + "</td><td>" + rs.getString("pais") + "</td></tr>");
@@ -97,6 +99,7 @@ public class buscarHotel extends HttpServlet {
                     if (empty) out.println("<p>No se han encontrado resultados</p>");
                     out.println("<form action='buscarHotel.jsp'>");
                     out.println("<input type='submit' value='Atrás'>");
+                    out.println("</div>");
                     out.println("</form>");
                     out.println("</body>");
                     out.println("</html>");

@@ -60,7 +60,7 @@
            Connection connection = null;    
             
            try {         
-               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\adrian\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
                Statement statement = connection.createStatement();
                statement.setQueryTimeout(30);  // set timeout to 30 sec.
 

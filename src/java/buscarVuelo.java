@@ -105,7 +105,7 @@ public class buscarVuelo extends HttpServlet {
                     out.println("</head>");
                     out.println("<body>");
                     out.println("<h1>Resultado de la búsqueda</h1>");
-                    out.println("<table>");
+                    out.println("<table cellpadding='5'>");
                     out.println("<tr><th>Número de vuelo</th><th>Compañía</th><th>Ciudad de origen</th><th>Hora salida</th><th>Ciudad de destino</th><th>Hora llegada</th></tr>");
                     while (rs.next()) {
                         empty=false;
