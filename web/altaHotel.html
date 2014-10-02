@@ -14,23 +14,51 @@ and open the template in the editor.
                 width: 173px;
                 margin-left: 2px;
             }
+
+            table td input {
+                float: right;
+            }
+
+            body {
+                background-image: url("images/background.jpg");
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            #container {
+                padding: 20px;
+                width: 330px;
+                height: 415px;
+                bottom: 0; left: 0; top: 0; right: 0;
+                margin: auto;
+                position: absolute;
+
+                background-color: #f2f0e9;
+                border-radius: 15px 15px 15px 15px;
+                border-style: solid;
+                border-color: #000;
+                border-width: 2px;
+            }
         </style>
     </head>
     <body>
-       <h1>Alta Hotel</h1>
-        <form action="altaHotel" method="post">
-            <table>
-                <tr><td>Nombre del hotel: </td><td><input type="text" name="nombre"/></td></tr>
-                <tr><td>Cadena hotelera: </td><td><input type="text" name="cadena"/></td></tr>
-                <tr><td>Num. habitaciones: </td><td><input type="number" name="num_hab"/></td></tr>
-                <tr><td>Calle: </td><td><input type="text" name="calle"/></td></tr>
-                <tr><td>Número: </td><td><input type="number" name="numero"/></td></tr>
-                <tr><td>Código postal: </td><td><input type="text" name="cp"/></td></tr>
-                <tr><td>Ciudad: </td><td><input type="text" name="ciudad"/></td></tr>
-                <tr><td>Provincia: </td><td><input type="text" name="provincia"/></td></tr>
-                <tr><td>País: </td><td><input type="text" name="pais"/></td></tr>
-                <tr><td><input type="submit" value="Enviar"></td></tr>
-            </table>
-        </form>
+        <div id="container">
+            <h1>Alta Hotel</h1>
+            <form action="altaHotel" method="post">
+                <table>
+                    <tr><td>Nombre del hotel: </td><td><input type="text" name="nombre"/></td></tr>
+                    <tr><td>Cadena hotelera: </td><td><input type="text" name="cadena"/></td></tr>
+                    <tr><td>Num. habitaciones: </td><td><input type="number" name="num_hab"/></td></tr>
+                    <tr><td>Calle: </td><td><input type="text" name="calle"/></td></tr>
+                    <tr><td>Número: </td><td><input type="number" name="numero"/></td></tr>
+                    <tr><td>Código postal: </td><td><input type="text" name="cp"/></td></tr>
+                    <tr><td>Ciudad: </td><td><input type="text" name="ciudad"/></td></tr>
+                    <tr><td>Provincia: </td><td><input type="text" name="provincia"/></td></tr>
+                    <tr><td>País: </td><td><input type="text" name="pais"/></td></tr>
+                    <tr><td colspan="2"><input type="submit" value="Enviar"></td></tr>
+                </table>
+            </form>
+        </div>
     </body>
 </html>
