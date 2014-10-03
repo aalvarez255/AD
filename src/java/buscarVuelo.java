@@ -44,17 +44,19 @@ public class buscarVuelo extends HttpServlet {
         String origen = request.getParameter("origen");
         String destino = request.getParameter("destino");
 
-        Boolean search = true;
         if (num.equals("") && compania == null && origen == null && destino == null) {
-            search = false;
+            request.setAttribute("msg","0");
+
+            RequestDispatcher rd = request.getRequestDispatcher("buscarVuelo.jsp");
+            rd.forward(request,response); 
         }
 
-        if (search) {
+        else {
             Connection connection = null;
             try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -113,12 +115,13 @@ public class buscarVuelo extends HttpServlet {
                         empty = false;
                         out.println("<tr><td>" + rs.getString("num_vuelo") + "</td><td>" + rs.getString("companyia") + "</td><td>" + rs.getString("origen") + "</td><td>" + rs.getString("hora_salida") + "</td><td>" + rs.getString("destino") + "</td><td>" + rs.getString("hora_llegada") + "</td></tr>");
                     }
-                    out.println("<form action='buscarVuelo.jsp'>");
-                    out.println("<tr><td colspan='6'><input type='submit' value='Atrás'></td></tr>");
                     out.println("</table>");
                     if (empty) {
                         out.println("<p>No se han encontrado resultados</p>");
                     }
+                    out.println("<form action='buscarVuelo.jsp'>");
+                    out.println("<input type='submit' value='Atrás'>");
+                   
                     out.println("</form>");
                     out.println("</div>");
                     out.println("</body>");
@@ -148,27 +151,7 @@ public class buscarVuelo extends HttpServlet {
                     rd.forward(request, response);
                 }
             }
-        } else {
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Error</h1>");
-                out.println("<p>No se han introducido datos de búsqueda</p>");
-                out.println("<form action='buscarVuelo.jsp'>");
-                out.println("<input type='submit' value='Atrás'>");
-                out.println("</form>");
-                out.println("</body>");
-                out.println("</html>");
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
-        }
-
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -45,41 +45,55 @@ public class altaVuelo extends HttpServlet {
         String ciudad_destino = request.getParameter("ciudad_destino");
         String hora_llegada = request.getParameter("llegada");
         
-        Connection connection = null;
-        try {          
-            // create a database connection
-            //if the database doesn't exists, it will be created
-            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+        if (num_vuelo.equals("") || compañia.equals("") || ciudad_origen.equals("")
+                || hora_salida.equals("") || ciudad_destino.equals("") || hora_llegada.equals("")) {
             
-            statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-            statement.executeUpdate("insert into vuelos (num_vuelo,companyia,origen,hora_salida,destino,hora_llegada) values('"+num_vuelo+"','"+compañia+"','"+ciudad_origen+"','"+hora_salida+"','"+ciudad_destino+"','"+hora_llegada+"')");
-           
-        }catch(SQLException e){
-            System.err.println(e.getMessage());
-            request.setAttribute("errorType","database");
-            request.setAttribute("goto","menu");
-            
-            RequestDispatcher rd = request.getRequestDispatcher("error");
-            rd.forward(request,response);
+            request.setAttribute("msg","0");
+
+            RequestDispatcher rd = request.getRequestDispatcher("altaVuelo.jsp");
+            rd.forward(request,response);           
         }
-        finally {
-            try {
-                if(connection != null)
-                    connection.close();
-            }
-            catch(SQLException e) {
-                // connection close failed.
+        else {
+            Connection connection = null;
+            try {          
+                // create a database connection
+                //if the database doesn't exists, it will be created
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+                statement.executeUpdate("create table if not exists vuelos (id_vuelo integer primary key autoincrement, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
+                statement.executeUpdate("insert into vuelos (num_vuelo,companyia,origen,hora_salida,destino,hora_llegada) values('"+num_vuelo+"','"+compañia+"','"+ciudad_origen+"','"+hora_salida+"','"+ciudad_destino+"','"+hora_llegada+"')");
+
+            }catch(SQLException e){
                 System.err.println(e.getMessage());
                 request.setAttribute("errorType","database");
                 request.setAttribute("goto","menu");
-                
+
                 RequestDispatcher rd = request.getRequestDispatcher("error");
                 rd.forward(request,response);
             }
-        }  
-        response.sendRedirect("menu.html");
+            finally {
+                try {
+                    if(connection != null)
+                        connection.close();
+                }
+                catch(SQLException e) {
+                    // connection close failed.
+                    System.err.println(e.getMessage());
+                    request.setAttribute("errorType","database");
+                    request.setAttribute("goto","menu");
+
+                    RequestDispatcher rd = request.getRequestDispatcher("error");
+                    rd.forward(request,response);
+                }
+            }
+            
+            request.setAttribute("msg","1");
+
+            RequestDispatcher rd = request.getRequestDispatcher("altaVuelo.jsp");
+            rd.forward(request,response); 
+        }
      
     }
 

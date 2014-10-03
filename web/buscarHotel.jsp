@@ -36,7 +36,7 @@
             #container {
                 padding: 20px;
                 width: 320px;
-                height: 207px;
+                height: 240px;
                 bottom: 0; left: 0; top: 0; right: 0;
                 margin: auto;
                 position: absolute;
@@ -46,6 +46,23 @@
                 border-style: solid;
                 border-color: #000;
                 border-width: 2px;
+            }
+            
+             #red {
+                margin-top:3px;
+                color: red;
+                padding-bottom:5px;
+            }
+            
+            
+            #atras {
+                float:right;
+                margin-right:6px;
+            }
+            
+            input[type=submit] {
+                width:80px;
+                margin-top: 10px;
             }
         </style>
     </head>
@@ -60,7 +77,7 @@
            Connection connection = null;    
             
            try {         
-               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+               connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
                Statement statement = connection.createStatement();
                statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -117,10 +134,25 @@
                 </table>
             </form>
             <form action='menu.html'>
-                <table>
+                <table id="atras">
                     <tr><td colspan="2"><input type='submit' value='Atrás'></td></tr>
                 </table>
             </form>
+            <% 
+                String code = (String)request.getAttribute("msg");
+                String color = "";
+                String msg = "";
+
+                if(code != null) {                            
+                    if (code.equals("0")) {                                
+                        color = "red";
+                        msg = "Se debe introducir al menos 1 campo de búsqueda.";
+                    }   
+                }
+
+            %>
+
+            <p id="<%=color%>"><%=msg%></p>
         </div>
     </body>
 </html>

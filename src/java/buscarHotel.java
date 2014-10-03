@@ -42,17 +42,19 @@ public class buscarHotel extends HttpServlet {
         String chain = request.getParameter("cad_hoteles"); // en la DB: cadena
         String city = request.getParameter("ciu_hotel"); // en la DB: ciudad
 
-        Boolean search = true;
         if (name.equals("") && chain == null && city == null) {
-            search = false;
+            request.setAttribute("msg","0");
+
+            RequestDispatcher rd = request.getRequestDispatcher("buscarHotel.jsp");
+            rd.forward(request,response); 
         }
 
-        if (search) {
+        else {
             Connection connection = null;
             try {
                 // create a database connection
                 //if the database doesn't exists, it will be created
-                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
                 Statement statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
@@ -93,13 +95,13 @@ public class buscarHotel extends HttpServlet {
                     while (rs.next()) {
                         empty = false;
                         out.println("<tr><td>" + rs.getString("nom_hotel") + "</td><td>" + rs.getString("cadena") + "</td><td>" + rs.getString("num_hab") + "</td><td>" + rs.getString("calle") + "</td><td>" + rs.getString("numero") + "</td><td>" + rs.getString("codigo_postal") + "</td><td>" + rs.getString("ciudad") + "</td><td>" + rs.getString("provincia") + "</td><td>" + rs.getString("pais") + "</td></tr>");
-                    }
-                    out.println("<form action='buscarHotel.jsp'>");
-                    out.println("<tr><td colspan='9'><input type='submit' value='Atrás'></td></tr>");
+                    }                    
                     out.println("</table>");
                     if (empty) {
                         out.println("<p>No se han encontrado resultados</p>");
                     }
+                    out.println("<form action='buscarHotel.jsp'>");
+                    out.println("<input type='submit' value='Atrás'>");
                     out.println("</form>");
                     out.println("</div>");
                     out.println("</body>");
@@ -128,25 +130,6 @@ public class buscarHotel extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("error");
                     rd.forward(request, response);
                 }
-            }
-        } else {
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Error</h1>");
-                out.println("<p>No se han introducido datos de búsqueda</p>");
-                out.println("<form action='buscarHotel.jsp'>");
-                out.println("<input type='submit' value='Atrás'>");
-                out.println("</form>");
-                out.println("</body>");
-                out.println("</html>");
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
             }
         }
     }

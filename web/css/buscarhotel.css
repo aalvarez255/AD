@@ -39,3 +39,7 @@ body {
 
 }
 
+input[type=submit] {
+    float:right;
+    margin-right: 40px;
+}

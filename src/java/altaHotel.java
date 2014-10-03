@@ -40,49 +40,65 @@ public class altaHotel extends HttpServlet {
                 
         String nombre = request.getParameter("nombre");
         String cadena = request.getParameter("cadena");
-        int num_hab = Integer.parseInt(request.getParameter("num_hab"));
+        int num_hab = 0;
+        if (!request.getParameter("num_hab").equals("")) num_hab = Integer.parseInt(request.getParameter("num_hab"));
         String calle = request.getParameter("calle");
-        int numero = Integer.parseInt(request.getParameter("numero"));
+        int numero = 0;
+        if (!request.getParameter("numero").equals("")) numero = Integer.parseInt(request.getParameter("numero"));
         String cp = request.getParameter("cp");
         String ciudad = request.getParameter("ciudad");
         String provincia = request.getParameter("provincia");
         String pais = request.getParameter("pais");
-        
-        Connection connection = null;
-        try {          
-            // create a database connection
-            //if the database doesn't exists, it will be created
-            connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Toni\\Documents\\NetBeansProjects\\AD\\web\\WEB-INF\\database.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+       
+        if (nombre.equals("") || cadena.equals("") || num_hab == 0 
+                || calle.equals("") || numero == 0 || cp.equals("") ||
+                ciudad.equals("") || provincia.equals("") || pais.equals("")) {
             
-            statement.executeUpdate("create table if not exists hoteles (id_hotel integer primary key autoincrement, nom_hotel string,cadena string, num_hab integer, calle string, numero integer, codigo_postal string, ciudad string, provincia string, pais string)");
-            statement.executeUpdate("insert into hoteles (nom_hotel,cadena,num_hab,calle,numero,codigo_postal,ciudad,provincia,pais) values('"+nombre+"','"+cadena+"',"+num_hab+",'"+calle+"',"+numero+",'"+cp+"','"+ciudad+"','"+provincia+"','"+pais+"')");
-           
-        }catch(SQLException e){
-            System.err.println(e.getMessage());
-            request.setAttribute("errorType","database");
-            request.setAttribute("goto","menu");
-            
-            RequestDispatcher rd = request.getRequestDispatcher("error");
-            rd.forward(request,response);
+            request.setAttribute("msg","0");
+
+            RequestDispatcher rd = request.getRequestDispatcher("altaHotel.jsp");
+            rd.forward(request,response);            
         }
-        finally {
-            try {
-                if(connection != null)
-                    connection.close();
-            }
-            catch(SQLException e) {
-                // connection close failed.
+        else {
+            Connection connection = null;
+            try {          
+                // create a database connection
+                //if the database doesn't exists, it will be created
+                connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Adrian\\Documents\\NetBeansProjects\\Lab2\\web\\WEB-INF\\database.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+                statement.executeUpdate("create table if not exists hoteles (id_hotel integer primary key autoincrement, nom_hotel string,cadena string, num_hab integer, calle string, numero integer, codigo_postal string, ciudad string, provincia string, pais string)");
+                statement.executeUpdate("insert into hoteles (nom_hotel,cadena,num_hab,calle,numero,codigo_postal,ciudad,provincia,pais) values('"+nombre+"','"+cadena+"',"+num_hab+",'"+calle+"',"+numero+",'"+cp+"','"+ciudad+"','"+provincia+"','"+pais+"')");
+
+            }catch(SQLException e){
                 System.err.println(e.getMessage());
                 request.setAttribute("errorType","database");
                 request.setAttribute("goto","menu");
-               
+
                 RequestDispatcher rd = request.getRequestDispatcher("error");
                 rd.forward(request,response);
             }
-        }  
-        response.sendRedirect("menu.html");
+            finally {
+                try {
+                    if(connection != null)
+                        connection.close();
+                }
+                catch(SQLException e) {
+                    // connection close failed.
+                    System.err.println(e.getMessage());
+                    request.setAttribute("errorType","database");
+                    request.setAttribute("goto","menu");
+
+                    RequestDispatcher rd = request.getRequestDispatcher("error");
+                    rd.forward(request,response);
+                }
+            }  
+            request.setAttribute("msg","1");
+
+            RequestDispatcher rd = request.getRequestDispatcher("altaHotel.jsp");
+            rd.forward(request,response);  
+        }
      
     }
 
